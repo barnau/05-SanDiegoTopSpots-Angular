@@ -1,8 +1,8 @@
-var topspotsApp = angular.module("topspotsApp", ['ngRoute', 'uiGmapgoogle-maps'])
+var topspotsApp = angular.module("topspotsApp", ['ngRoute'])
 
 
 
-.config(function($routeProvider, uiGmapGoogleMapApiProvider) {
+.config(function($routeProvider) {
     $routeProvider.
     when('/:cityName', {
         templateUrl: 'templates/city.html',
@@ -16,9 +16,18 @@ var topspotsApp = angular.module("topspotsApp", ['ngRoute', 'uiGmapgoogle-maps']
 
 })
 
+.factory('dataSetFactory', function($http, $routeParams) {
+    return {
+          getTopSpots: function(){
+            return $http.get('mock/' + $routeParams.cityName + '.json');
+          }
+        };
+
+})
 
 
-.controller('cityCtrl', function($scope, $routeParams, $http, uiGmapGoogleMapApi) {
+
+.controller('cityCtrl', ['$scope', '$routeParams', '$http', 'dataSetFactory', function($scope, $routeParams, $http, dataSetFactory) {
 
     $scope.city = $routeParams.cityName;
 
@@ -44,27 +53,24 @@ var topspotsApp = angular.module("topspotsApp", ['ngRoute', 'uiGmapgoogle-maps']
 
     $scope.markers = [];
 
-    console.log($scope.map)
+   dataSetFactory.getTopSpots().then(
+        function(response) {
+            $scope.spots = response.data;
+        },
+        function(error) {
 
-    $http.get('mock/' + $scope.city + '.json').success(function(spots) {
-        $scope.spots = spots;
+        }
+    ); 
 
-        //create marker object array
-        $scope.markers = $scope.spots.map(function(spot) {
-            var rObj = {};
-            rObj.position = { latitude: spot.location[0], longitude: spot.location[1] };
-            rObj.map = $scope.map;
-            rObj.title = spot.name;
-            console.log(rObj);
-            return rObj;
-        });
 
-    });
+
+
+   
 
     $scope.goToTopSpot = function(spot) {
         window.location.replace('https://www.google.com/maps?q=' + spot.location);
     }
-})
+}])
 
 .controller('navCtrl', function($scope) {
     $scope.tab = 1;
