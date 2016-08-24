@@ -19,7 +19,11 @@ var topspotsApp = angular.module("topspotsApp", ['ngRoute'])
 .factory('dataSetFactory', function($http, $routeParams) {
     return {
           getTopSpots: function(){
-            return $http.get('mock/' + $routeParams.cityName + '.json');
+            //return $http.get('mock/' + $routeParams.cityName + '.json');
+            return $http.get('http://localhost:62152/api/TopSpot');
+          },
+          postTopSpots: function(topspots) {
+            return $http.post('http://localhost:62152/api/TopSpot',topspots);
           }
         };
 
@@ -62,13 +66,15 @@ var topspotsApp = angular.module("topspotsApp", ['ngRoute'])
         }
     ); 
 
-
-
-
-   
-
-    $scope.goToTopSpot = function(spot) {
+ $scope.goToTopSpot = function(spot) {
         window.location.replace('https://www.google.com/maps?q=' + spot.location);
+    }
+
+
+    $scope.pushToSpotsArray = function() {
+        $scope.spots.push({name: $scope.newName, description: $scope.newDescription, location: [$scope.newCoordX, $scope.newCoordY]});
+        dataSetFactory.postTopSpots($scope.spots).then(
+        ); 
     }
 }])
 
