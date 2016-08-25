@@ -10,25 +10,25 @@
       </div>
       <div class="modal-body">
         <ul class="list-group">
-            <li>
+            <li class="list-group-item">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">Name</span>
                   <input type="text" class="form-control" ng-model="newName"  aria-describedby="basic-addon1">
                 </div>
             </li>   
-            <li>
+            <li class="list-group-item">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">Description</span>
                   <input type="text" class="form-control" ng-model="newDescription" aria-describedby="basic-addon1">
                 </div>
             </li> 
-            <li>
+            <li class="list-group-item">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">X Coord</span>
                   <input type="text" class="form-control" ng-model="newCoordX" aria-describedby="basic-addon1">
                 </div>
             </li>  
-            <li>
+            <li class="list-group-item">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">Y Coord</span>
                   <input type="text" class="form-control" ng-model="newCoordY" aria-describedby="basic-addon1">
@@ -70,6 +70,9 @@
             </td>
             <td class="col-md-2">
                 <a class="btn btn-block btn-primary" type="button" value="Link" ng-click="goToTopSpot(spot)">Link</a>
+            </td>
+            <td class="col-md-2">
+                <a class="btn btn-block btn-danger" type="button" value="Delete" ng-click="deleteFromTopSpots(spot)">Delete</a>
             </td>
         </tr>
     </tbody>

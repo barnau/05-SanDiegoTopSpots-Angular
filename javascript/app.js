@@ -19,11 +19,15 @@ var topspotsApp = angular.module("topspotsApp", ['ngRoute'])
 .factory('dataSetFactory', function($http, $routeParams) {
     return {
           getTopSpots: function(){
-            //return $http.get('mock/' + $routeParams.cityName + '.json');
+            
             return $http.get('http://localhost:62152/api/TopSpot');
           },
           postTopSpots: function(topspots) {
-            return $http.post('http://localhost:62152/api/TopSpot',topspots);
+            return $http.post('http://localhost:62152/api/TopSpot', topspots);
+          },
+          deleteTopSpot: function(index) {
+            console.log(index);
+            return $http.delete('http://localhost:62152/api/TopSpot/' + index);
           }
         };
 
@@ -72,10 +76,25 @@ var topspotsApp = angular.module("topspotsApp", ['ngRoute'])
 
 
     $scope.pushToSpotsArray = function() {
+        alert("in push to top spots function")
         $scope.spots.push({name: $scope.newName, description: $scope.newDescription, location: [$scope.newCoordX, $scope.newCoordY]});
         dataSetFactory.postTopSpots($scope.spots).then(
         ); 
     }
+
+    $scope.deleteFromTopSpots = function(spot) {
+        alert("delete ran...")
+        var index = $scope.spots.indexOf(spot);
+
+
+        dataSetFactory.deleteTopSpot(index).then(
+            function(response) {
+                $scope.spots = response.data;
+            }
+
+            )
+    }
+
 }])
 
 .controller('navCtrl', function($scope) {
